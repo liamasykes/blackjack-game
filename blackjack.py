@@ -7,7 +7,8 @@ class Blackjack:
     def createUsers(self):
         computerUser = Computer()
         playerUser = Player()
-        cards = Cards()
+        deck = Deck()
+        deck.printDeck()
 
 
 class Users:
@@ -33,16 +34,46 @@ class Player(Users):
 class Deck:
     """Deck Class"""
     
+    # Create the 52 card deck and dictionary suits for UI
     def __init__(self):
         self.suits = { "Clubs" : "♧", "Spades" : "♤", "Hearts" : "♡", "Diamonds" : "♢" }
-        self.cards = Cards()
+        self.cards = []
+        self.buildDeck()
+    
+    def buildDeck(self):
+        for i in ["Clubs", "Spades", "Hearts", "Diamonds"]:
+            for j in range(2, 15):
+                self.cards.append(Cards(i, j))
 
-class Cards(Deck):
+    def removeFrom(self):
+        pass
+
+    def printDeck(self):
+        for card in self.cards:
+            card.printCard(card)
+
+class Cards:
     """Cards Class"""
 
-    def __init__(self):
-        self.total = 52
+    def __init__(self, suit, value):
+        self.suit = suit
+        self.value = value
     
+    def determineFace(self, value):
+        switch_faces = {
+            11: "Jack",
+            12: "Queen",
+            13: "King",
+            14: "Ace"
+        }
+        return switch_faces.get(value)
+
+    def printCard(self, card):
+        if card.value > 10:
+            print("{} of {}".format(self.determineFace(card.value), card.suit))
+        else:
+            print("{} of {}".format(self.value, self.suit))
+
 
 if __name__ == '__main__':
     print("Starting blackjack.py...\n\n")
