@@ -1,3 +1,5 @@
+import random
+
 class Blackjack:
     """Blackjack Class"""
 
@@ -9,6 +11,12 @@ class Blackjack:
         playerUser = Player()
         deck = Deck()
         deck.printDeck()
+        deck.removeFrom()
+        print("\n---------------\n")
+        deck.printDeck()
+
+    def dealCards(self, player):
+        pass
 
 
 class Users:
@@ -20,6 +28,7 @@ class Computer(Users):
 
     def __init__(self):
         self.name = "Dealer"
+        self.hand = []
         print("My name is " + self.name)
 
 
@@ -28,6 +37,7 @@ class Player(Users):
 
     def __init__(self):
         self.name = "Player"
+        self.hand = []
         print("My name is " + self.name)
 
 
@@ -37,19 +47,19 @@ class Deck:
     # Create the 52 card deck and dictionary suits for UI
     def __init__(self):
         self.suits = { "Clubs" : "♧", "Spades" : "♤", "Hearts" : "♡", "Diamonds" : "♢" }
-        self.cards = []
+        self.deck = []
         self.buildDeck()
     
     def buildDeck(self):
         for i in ["Clubs", "Spades", "Hearts", "Diamonds"]:
             for j in range(2, 15):
-                self.cards.append(Cards(i, j))
+                self.deck.append(Cards(i, j))
 
     def removeFrom(self):
-        pass
+        self.deck.pop(random.randrange(len(self.deck)))
 
     def printDeck(self):
-        for card in self.cards:
+        for card in self.deck:
             card.printCard(card)
 
 class Cards:
