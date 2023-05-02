@@ -5,16 +5,16 @@ class Blackjack:
 
     def __init__(self):
         self.createUsers()
+        self.gameRunning = True
 
     def createUsers(self):
-        computerUser = Computer()
-        playerUser = Player()
+        Players = [Computer("Dealer"), Player("Player1")]
         deck = Deck()
-        deck.printDeck()
         deck.removeFrom()
-        print("\n---------------\n")
+        for player in Players:
+            player.receiveCard(deck)
         deck.printDeck()
-
+        
     def dealCards(self, player):
         pass
 
@@ -22,23 +22,28 @@ class Blackjack:
 class Users:
     """Users Class"""
 
+    def receiveCard(self, deck):
+        self.hand.append(deck.removeFrom())
+        print(self.name)
+        print(self.hand)
+        print("My hand is: ")
+        for card in self.hand:
+            card.printCard(card)
 
 class Computer(Users):
     """Computer Class"""
 
-    def __init__(self):
-        self.name = "Dealer"
+    def __init__(self, name):
+        self.name = name
         self.hand = []
-        print("My name is " + self.name)
 
 
 class Player(Users):
     """Player Class"""
 
-    def __init__(self):
-        self.name = "Player"
+    def __init__(self, name):
+        self.name = name
         self.hand = []
-        print("My name is " + self.name)
 
 
 class Deck:
@@ -56,7 +61,8 @@ class Deck:
                 self.deck.append(Cards(i, j))
 
     def removeFrom(self):
-        self.deck.pop(random.randrange(len(self.deck)))
+        removedCard = self.deck.pop(random.randrange(len(self.deck)))
+        return removedCard
 
     def printDeck(self):
         for card in self.deck:
