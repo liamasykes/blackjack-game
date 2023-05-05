@@ -56,7 +56,7 @@ class Deck:
         self.buildDeck()
     
     def buildDeck(self):
-        for i in ["Clubs", "Spades", "Hearts", "Diamonds"]:
+        for i in ["♧", "♤", "♡", "♢"]:
             for j in range(2, 15):
                 self.deck.append(Cards(i, j))
 
@@ -76,19 +76,26 @@ class Cards:
         self.value = value
     
     def determineFace(self, value):
-        switch_faces = {
-            11: "Jack",
-            12: "Queen",
-            13: "King",
-            14: "Ace"
+        switch_faces = { # Jack, Queen, King, Ace, Respectively
+            11: "J",
+            12: "Q",
+            13: "K",
+            14: "A"
         }
-        return switch_faces.get(value)
+        if value > 10: return switch_faces.get(value)
+        else: return value
 
     def printCard(self, card):
-        if card.value > 10:
-            print("{} of {}".format(self.determineFace(card.value), card.suit))
+        print("┌─────────┐")
+        print("│ {}       │".format(self.suit))
+        print("│         │")
+        if card.value == 10:
+            print("│    {}   │".format(card.value))
         else:
-            print("{} of {}".format(self.value, self.suit))
+            print("│    {}    │".format(self.determineFace(card.value)))
+        print("│         │")
+        print("│       {} │".format(self.suit))
+        print("└─────────┘")
 
 
 if __name__ == '__main__':
