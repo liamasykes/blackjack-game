@@ -1,4 +1,5 @@
 import random
+import os
 
 class Blackjack:
     """Blackjack Class // Blackjack game operations """
@@ -14,6 +15,18 @@ class Blackjack:
         self.players[0].printHand()
         self.players[1].printHand()
         self.deck.printDeck()
+        os.system('cls')
+        self.promptPlayer()
+
+    def promptPlayer(self):
+        while self.gameRunning == True:
+            userInput = input("Hit (H) / Stand (S)")
+            self.determineInput(userInput)
+
+    def determineInput(self, userInput):
+        if userInput == "H" or userInput == "S":
+            print("Invalid")
+        else: print("Valid")
 
     # Create the players
     def createUsers(self):
