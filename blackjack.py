@@ -37,7 +37,7 @@ class Player:
     def addToHand(self, deck):
         dealtCard = deck.removeFromDeck()
         self.hand.append(dealtCard)
-        addToScore(dealtCard)
+        self.addToScore(dealtCard)
 
     # Add value of card to score, if face card add 10
     def addToScore(self, dealtCard):
