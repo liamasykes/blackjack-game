@@ -10,7 +10,6 @@ class Blackjack:
         self.gameRunning = True
         self.deck = Deck()
         self.initialHand()
-
         self.promptPlayer()
 
     # Create the players
@@ -23,14 +22,16 @@ class Blackjack:
             self.determineInput(userInput)
 
     def determineInput(self, userInput):
-        if userInput == "H" or userInput == "S":
-            if userInput == "H": self.dealCard(self.players[1])
-            else: self.runDealer()
-        else: determineInput(input("Invalid option! Hit (H) / Stand (S)"))
+        if userInput.upper() == "H" or userInput.upper() == "S": # .upper() allows user to input lowercase s/h
+            if userInput.upper() == "H": self.dealCard(self.players[1])
+            else:
+                self.gameRunning = False
+                self.runDealer()
+        else: determineInput(input("Invalid option! Hit (H) / Stand (S)\n"))
 
     def runDealer(self):
-        while players[0].score < 17:
-            self.dealCard(players[0])
+        while self.players[0].score < 17:
+            self.dealCard(self.players[0])
         
     # Deal a card to player chosen and print updated set
     def dealCard(self, player):
@@ -47,6 +48,9 @@ class Blackjack:
         for i in range(2):
             self.dealCard(self.players[1])
             self.dealCard(self.players[0])
+    
+    def gameOutcomes(self):
+        pass
 
     
 class Player:
