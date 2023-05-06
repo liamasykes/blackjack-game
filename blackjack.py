@@ -4,47 +4,56 @@ class Blackjack:
     """Blackjack Class"""
 
     def __init__(self):
-        self.createUsers()
+        self.players = self.createUsers()
         self.gameRunning = True
+        self.deck = Deck()
+        for player in self.players:
+            self.dealCard(player)
+            self.dealCard(player)
+            self.dealCard(player)
+        self.players[0].printHand()
+        self.players[1].printHand()
+        self.deck.printDeck()
 
     def createUsers(self):
-        Players = [Computer("Dealer"), Player("Player1")]
-        deck = Deck()
-        deck.removeFrom()
-        for player in Players:
-            player.receiveCard(deck)
-        deck.printDeck()
+        return [Player("Dealer"), Player("Player1")]
         
-    def dealCards(self, player):
-        pass
+    def dealCard(self, player):
+        player.addToHand(self.deck)
+
+    
 
 
-class Users:
+class Player:
     """Users Class"""
 
-    def receiveCard(self, deck):
-        self.hand.append(deck.removeFrom())
-        print(self.name)
-        print(self.hand)
-        print("My hand is: ")
-        for card in self.hand:
-            card.printCard(card)
-
-class Computer(Users):
-    """Computer Class"""
-
     def __init__(self, name):
         self.name = name
         self.hand = []
 
+    def addToHand(self, deck):
+        self.hand.append(deck.removeFromDeck())
 
-class Player(Users):
-    """Player Class"""
-
-    def __init__(self, name):
-        self.name = name
-        self.hand = []
-
+    def printHand(self):
+        print("My name is {}".format(self.name))
+        for card in self.hand: print("┌─────────┐", end=" ")
+        print()
+        for card in self.hand: print("│ {}       │".format(card.suit), end=" ")
+        print()
+        for card in self.hand: print("│         │", end=" ")
+        print()
+        for card in self.hand: 
+            if card.value == 10:
+                print("│    {}   │".format(card.value), end=" ")
+            else:
+                print("│    {}    │".format(card.determineFace(card.value)), end=" ")
+        print()
+        for card in self.hand: print("│         │", end=" ")
+        print()
+        for card in self.hand: print("│       {} │".format(card.suit), end=" ")
+        print()
+        for card in self.hand: print("└─────────┘", end=" ")
+        print()
 
 class Deck:
     """Deck Class"""
@@ -60,13 +69,16 @@ class Deck:
             for j in range(2, 15):
                 self.deck.append(Cards(i, j))
 
-    def removeFrom(self):
+    def removeFromDeck(self):
         removedCard = self.deck.pop(random.randrange(len(self.deck)))
         return removedCard
 
     def printDeck(self):
         for card in self.deck:
-            card.printCard(card)
+            if card.value > 10:
+                print("{} of {}".format(card.determineFace(card.value), card.suit))
+            else:
+                print("{} of {}".format(card.value, card.suit))
 
 class Cards:
     """Cards Class"""
@@ -83,20 +95,7 @@ class Cards:
             14: "A"
         }
         if value > 10: return switch_faces.get(value)
-        else: return value
-
-    def printCard(self, card):
-        print("┌─────────┐")
-        print("│ {}       │".format(self.suit))
-        print("│         │")
-        if card.value == 10:
-            print("│    {}   │".format(card.value))
-        else:
-            print("│    {}    │".format(self.determineFace(card.value)))
-        print("│         │")
-        print("│       {} │".format(self.suit))
-        print("└─────────┘")
-
+        else: return value    
 
 if __name__ == '__main__':
     print("Starting blackjack.py...\n\n")
