@@ -33,13 +33,20 @@ class Player:
         self.hand = []
         self.score = 0
 
-    # Calls the method to remove card from deck...append to hand
+    # Calls the method to remove card from deck, append to hand, add value to score
     def addToHand(self, deck):
-        self.hand.append(deck.removeFromDeck())
+        dealtCard = deck.removeFromDeck()
+        self.hand.append(dealtCard)
+        addToScore(dealtCard)
+
+    # Add value of card to score, if face card add 10
+    def addToScore(self, dealtCard):
+        if dealtCard.value > 9: self.score += 10
+        else: self.score += dealtCard.value
 
     # Messy print function properly prints cards in player's hand side-by-side
     def printHand(self):
-        print("My name is {}".format(self.name))
+        print("{}'s hand: {}".format(self.name, self.score))
         for card in self.hand: print("┌─────────┐", end=" ")
         print()
         for card in self.hand: print("│ {}       │".format(card.suit), end=" ")
