@@ -2,10 +2,6 @@
 
 This project is a simple command-line version of the classic card game "Blackjack". It allows a player to play against the dealer (computer) and try to get as close to 21 points without going over. 
 
-# Table of Contents
-- How to Install and Run the Project
-- How to Use the Project
-
 ## How to Install and Run the Project
 1. Make sure you have Python 3 installed on your computer.
 2. Download or clone this repository to your local machine.
