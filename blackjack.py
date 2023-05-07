@@ -200,12 +200,4 @@ class Cards:
         else: return self.value
 
 if __name__ == '__main__':
-    print("Starting blackjack.py...\n\n")
-    userInput = input("\"/start\" to play!\n")
-    while(userInput != "/start"):
-        if userInput == "/help":
-            print("\nHelp Menu\n")
-            userInput = input()
-        else: userInput = input("Invalid command...\"/help\" to see list of commands.\n")
-        
-    Blackjack()
+    game = Blackjack()
