@@ -1,6 +1,5 @@
 import random
 import os
-import sys
 
 class Blackjack:
     """Blackjack Class // Blackjack game operations """
@@ -17,11 +16,13 @@ class Blackjack:
     def createUsers(self):
         return [Player("Dealer"), Player("Player1")]
 
+    # Prompt user to make a decision
     def promptPlayer(self):
         while self.gameRunning == True:
             userInput = input("Hit (H) / Stand (S)")
             self.determineInput(userInput)
 
+    # Determine what user chose; call given method 
     def determineInput(self, userInput):
         if userInput.upper() == "H" or userInput.upper() == "S": # .upper() allows user to input lowercase s/h
             if userInput.upper() == "H": self.dealCard(self.players[1])
@@ -29,8 +30,9 @@ class Blackjack:
                 self.gameRunning = False
                 self.runDealer()
         else: determineInput(input("Invalid option! Hit (H) / Stand (S)\n"))
-        self.gameOutcomes()
+        self.gameOutcomes() # Determine any possible outcomes after each turn
 
+    # When user 'stands', dealer hits until >= 17
     def runDealer(self):
         while self.players[0].score < 17:
             self.dealCard(self.players[0])
@@ -42,12 +44,14 @@ class Blackjack:
         self.replaceAce()
         self.printFunction()
 
+    # Print the current hands/dealer upcard
     def printFunction(self):
         os.system('cls') # ClearScrn to keep sensible output
         if self.gameRunning == True: self.players[0].printCard() # If the game is !over (user hit) then dont show the hole card
         else: self.players[0].printHand() 
         self.players[1].printHand()
 
+    # Upon execution deal the initial player hands (1 up/down for dealer, 2 to player)
     def initialHand(self):
         for i in range(2):
             self.dealCard(self.players[1])
@@ -56,10 +60,12 @@ class Blackjack:
             print("Blackjack! You win!") # Can only hit blackjack on deal
             exit()
     
+    # Method changes A value: 11 -> 1 if put over 21
     def replaceAce(self):
         if self.players[0].score > 21 and self.players[0].checkAce() == True: self.players[0].subtractTen()
         if self.players[1].score > 21 and self.players[1].checkAce() == True: self.players[1].subtractTen()
 
+    # Determine all possible game outcomes at any point of the game
     def gameOutcomes(self):
         if self.gameRunning == False:
             if self.players[0].score > 21: print("Bust...You win!")
@@ -94,11 +100,13 @@ class Player:
         elif dealtCard.value > 9: self.score += 10
         else: self.score += dealtCard.value
 
+    # Check if a player's hand contains an ace
     def checkAce(self):
         for card in self.hand:
             if card.value == 14: return True
             else: return False
         
+    # Remove 10 points from players score 
     def subtractTen(self):
         self.score -= 10
 
@@ -186,6 +194,7 @@ class Cards:
         if value > 10: return switch_faces.get(value)
         else: return value
 
+    # Get the true value of a playing card
     def getValue(self):
         if self.value > 10: return 10
         else: return self.value
