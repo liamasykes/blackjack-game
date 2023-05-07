@@ -1,5 +1,6 @@
 import random
 import os
+import sys
 
 class Blackjack:
     """Blackjack Class // Blackjack game operations """
@@ -28,14 +29,17 @@ class Blackjack:
                 self.gameRunning = False
                 self.runDealer()
         else: determineInput(input("Invalid option! Hit (H) / Stand (S)\n"))
+        self.gameOutcomes()
 
     def runDealer(self):
         while self.players[0].score < 17:
             self.dealCard(self.players[0])
-        
+        self.printFunction()
+
     # Deal a card to player chosen and print updated set
     def dealCard(self, player):
         player.addToHand(self.deck)
+        self.replaceAce()
         self.printFunction()
 
     def printFunction(self):
@@ -48,10 +52,24 @@ class Blackjack:
         for i in range(2):
             self.dealCard(self.players[1])
             self.dealCard(self.players[0])
+        if self.players[1].score == 21:
+            print("Blackjack! You win!") # Can only hit blackjack on deal
+            exit()
     
-    def gameOutcomes(self):
-        pass
+    def replaceAce(self):
+        if self.players[0].score > 21 and self.players[0].checkAce() == True: self.players[0].subtractTen()
+        if self.players[1].score > 21 and self.players[1].checkAce() == True: self.players[1].subtractTen()
 
+    def gameOutcomes(self):
+        if self.gameRunning == False:
+            if self.players[0].score > 21: print("Bust...You win!")
+            elif self.players[0].score == self.players[1].score: print("Draw!")
+            elif self.players[1].score > self.players[0].score: print("You win!")
+            else: print("Dealer wins!")
+        else: 
+            if self.players[1].score > 21:
+                print("Bust...Dealer wins!")
+                exit()
     
 class Player:
     """Player Class"""
@@ -73,8 +91,16 @@ class Player:
         if dealtCard.value == 14:
             if self.score + 11 > 21: self.score += 1
             else: self.score += 11
-        if dealtCard.value > 9: self.score += 10
+        elif dealtCard.value > 9: self.score += 10
         else: self.score += dealtCard.value
+
+    def checkAce(self):
+        for card in self.hand:
+            if card.value == 14: return True
+            else: return False
+        
+    def subtractTen(self):
+        self.score -= 10
 
     # Messy print function properly prints cards in player's hand side-by-side
     def printHand(self):
@@ -101,7 +127,7 @@ class Player:
     # Messy print function to print single card; for dealer's face up (still need to be dealt a second card for fairness)
     def printCard(self):
         for card in self.hand: 
-            print("{}'s hand: {}".format(self.name, card.value))
+            print("{}'s hand: {}".format(self.name, card.getValue()))
             print("┌─────────┐")
             print("│ {}       │".format(card.suit))
             print("│         │")
@@ -111,6 +137,7 @@ class Player:
             print("│       {} │".format(card.suit))
             print("└─────────┘")
             break
+    
 
 class Deck:
     """Deck Class"""
@@ -157,7 +184,11 @@ class Cards:
             14: "A"
         }
         if value > 10: return switch_faces.get(value)
-        else: return value    
+        else: return value
+
+    def getValue(self):
+        if self.value > 10: return 10
+        else: return self.value
 
 if __name__ == '__main__':
     print("Starting blackjack.py...\n\n")
